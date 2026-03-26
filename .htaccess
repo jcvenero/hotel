@@ -1,0 +1,25 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    
+    # Base por defecto (adaptado al entorno XAMPP actual)
+    RewriteBase /hotel/
+    
+    # Excluir explicitamente la carpeta admin, uploads y assets para que no pasen por el index.php publico
+    RewriteCond %{REQUEST_URI} !^/hotel/admin/
+    RewriteCond %{REQUEST_URI} !^/hotel/api/
+    RewriteCond %{REQUEST_URI} !^/hotel/public/uploads/
+    RewriteCond %{REQUEST_URI} !^/hotel/themes/default/assets/
+    
+    # Si la ruta no es un archivo físico ni un directorio
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    
+    # Redirigir todo al index.php del root central
+    RewriteRule ^(.*)$ index.php?path=$1 [QSA,L]
+</IfModule>
+
+# Seguridad Extra
+<FilesMatch "^\.env|config\.php|schema\.sql">
+    Order allow,deny
+    Deny from all
+</FilesMatch>

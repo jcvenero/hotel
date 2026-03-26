@@ -1,0 +1,32 @@
+# Denegar ejecución de scripts PHP
+<FilesMatch "\.php$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# Permitir solo archivos de imagen
+<FilesMatch "\.(jpg|jpeg|png|webp|gif|svg|ico)$">
+    Order allow,deny
+    Allow from all
+</FilesMatch>
+
+# Denegar acceso a archivos ocultos (excepto este htaccess en algunos casos, pero mejor denegar .*)
+<FilesMatch "^\.">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# Cache de navegador (imágenes)
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType image/webp "access plus 1 month"
+    ExpiresByType image/jpeg "access plus 1 month"
+    ExpiresByType image/png "access plus 1 month"
+    ExpiresByType image/svg+xml "access plus 1 month"
+    ExpiresByType image/x-icon "access plus 1 month"
+</IfModule>
+
+# Gzip compression
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE image/webp image/svg+xml image/x-icon
+</IfModule>
